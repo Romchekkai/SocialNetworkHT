@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SocialNetworkHT.Models.Users;
@@ -46,7 +47,7 @@ namespace SocialNetworkHT.Controllers.Account
 
                 var user = _mapper.Map<User>(model);
 
-                var result = await _signInManager.PasswordSignInAsync(user.Email, model.Password, model.RememberMe, false);
+                var result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
                     if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
@@ -66,6 +67,20 @@ namespace SocialNetworkHT.Controllers.Account
             return View("Views/Home/Index.cshtml");
         }
 
+
+        [Route("MyPage")]
+        [HttpGet]
+        [Authorize]
+        public IActionResult MyPage()
+        {
+            var user = User;
+
+            var result = _userManager.GetUserAsync(user);
+
+            return View("MyPage", new UserViewModel(result.Result));
+        }
+
+
         [Route("Logout")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -74,6 +89,5 @@ namespace SocialNetworkHT.Controllers.Account
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
-
     }
 }

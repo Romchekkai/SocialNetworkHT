@@ -14,7 +14,7 @@ namespace SocialNetworkHT.ViewModels.Account
         [DataType(DataType.Text)]
         [Display(Name = "Фамилия", Prompt = "Введите фамилию")]
         public string LastName { get; set; }
-        
+
         [Display(Name = "Отчество", Prompt = "Введите отчество")]
         public string MiddleName { get; set; }
 

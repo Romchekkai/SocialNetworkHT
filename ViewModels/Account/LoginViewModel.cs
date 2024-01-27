@@ -5,9 +5,8 @@ namespace SocialNetworkHT.ViewModels.Account
     public class LoginViewModel
     {
         [Required]
-        [EmailAddress]
-        [Display(Name = "Email", Prompt = "Введите email")]
-        public string Email { get; set; }
+        [Display(Name = "Login", Prompt = "Введите логин")]
+        public string Login { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

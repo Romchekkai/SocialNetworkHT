@@ -1,6 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity;
 @using SocialNetworkHT.Models.Users;
-
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager;
 
@@ -12,7 +11,7 @@
 }
 @if (SignInManager.IsSignedIn(User))
 {
-    <div>Hello @User.Identity!</div>
+    <partial name="_LoginPartial" />
 }
 else
 {
@@ -23,7 +22,7 @@ else
             <div class="center">
                 Пользуйтесь нашей самой крутой соцсетью! Регистрируйтесь всего за 2 минуты, делитесь мыслями, находите новых друзей.
             </div>
-            <img class="main-img" src="https://pngimg.com/uploads/beaver/beaver_PNG2.png" />
+            <img class="main-img" src="http://pngimg.com/uploads/husky/husky_PNG19.png" />
         </div>
 
 
