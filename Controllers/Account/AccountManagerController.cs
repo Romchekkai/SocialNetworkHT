@@ -65,7 +65,7 @@ namespace SocialNetworkHT.Controllers.Account
                     ModelState.AddModelError("", "Неправильный логин и (или) пароль");
                 }
             }
-            return View("Views/Home/Index.cshtml");
+            return RedirectToAction("Index", "Home"); 
         }
 
 
