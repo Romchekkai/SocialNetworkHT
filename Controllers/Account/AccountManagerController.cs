@@ -56,6 +56,7 @@ namespace SocialNetworkHT.Controllers.Account
                     }
                     else
                     {
+                       // await _signInManager.SignOutAsync();
                         return RedirectToAction("Index", "Home");
                     }
                 }
