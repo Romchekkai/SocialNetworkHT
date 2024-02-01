@@ -50,7 +50,7 @@ namespace SocialNetworkHT.Controllers.Account
                 var result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("MyPage", "AccountManager");
+                    return RedirectToAction("MyPage", "User");
                 }
                 else
                 {
