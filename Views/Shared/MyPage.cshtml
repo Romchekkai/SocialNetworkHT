@@ -2,4 +2,21 @@
 @{
     ViewData["Title"] = "MyPage";
 }
-<div> @Model.User.FirstName </div>
+
+<div class="our-page">
+
+  <div> @Model.User.FirstName @Model.User.LastName </div>
+   <div> @Model.User.Status</div>
+   <div> @Model.User.BirthDate.ToShortDateString()</div>
+   <div> @Model.User.About</div>
+   <div> @Model.User.Email</div>
+
+<div class="my-img">
+    <img class="my-img" src="@Model.User.Image" alt=" Нет изображения" />
+</div>
+
+    <form method="post" asp-controller="AccountManager" asp-action="Logout">
+        <input class="enter_submit" type="submit" value="Выход" />
+    </form>
+
+</div>
