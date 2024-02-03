@@ -37,7 +37,7 @@
     </div>
     <div class="myimgcontainer">
         <img class="my-img" src="@Model.User.Image" alt=" Нет изображения" />
-        <form method="" asp-controller="" asp-action="">
+        <form method="get" asp-controller="AccountManager" asp-action="UserEdit">
             <input class="myedit_button" type="submit" value="Редактировать профиль" />
         </form>
         <form method="post" asp-controller="AccountManager" asp-action="Logout">

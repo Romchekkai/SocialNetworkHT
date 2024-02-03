@@ -6,6 +6,7 @@ using SocialNetworkHT.Models.Users;
 using SocialNetworkHT.ViewModels.Account;
 using System.Security.Policy;
 using System.Threading.Tasks;
+using SocialNetworkHT.Extentions;
 
 namespace SocialNetworkHT.Controllers.Account
 {
@@ -82,5 +83,48 @@ namespace SocialNetworkHT.Controllers.Account
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
+
+
+        [Route("UserEdit")]
+        [HttpGet]
+        public IActionResult UserEdit()
+        {
+            var user = User;
+
+            var result = _userManager.GetUserAsync(user);
+
+            var editmodel = _mapper.Map<UserEditViewModel>(result.Result);
+
+            return View("UserEdit", editmodel);
+        }
+
+        [Authorize]
+        [Route("Update")]
+        [HttpPost]
+        public async Task<IActionResult> Update(UserEditViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByIdAsync(model.UserId);
+
+                user.Convert(model);
+
+                var result = await _userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("MyPage", "AccountManager");
+                }
+                else
+                {
+                    return RedirectToAction("UserEdit", "AccountManager");
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "Некорректные данные");
+                return View("UserEdit", model);
+            }
+        }
+
     }
 }
