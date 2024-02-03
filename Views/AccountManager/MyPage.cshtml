@@ -1,0 +1,54 @@
+﻿@model SocialNetworkHT.ViewModels.Account.UserViewModel
+@{
+    ViewData["Title"] = "MyPage";
+}
+<div class="page_container">
+    <div class="aboutme">
+        <table>
+            <tbody>
+                <tr>
+                    <th scope="row">Имя пользователя</th>
+                    <td><strong>@Model.User.FirstName @Model.User.LastName</strong></td>
+                </tr>
+                <tr>
+                    <th scope="row">Статус</th>
+                    <td>@Model.User.Status</td>
+                </tr>
+                <tr>
+                    <th scope="row">Дата рождения</th>
+                    <td>@Model.User.BirthDate.ToShortDateString()</td>
+                </tr>
+                <tr>
+                    <th scope="row">О себе</th>
+                    <td>@Model.User.About</td>
+                </tr>
+                <tr>
+                    <th scope="row">Почтовый адрес</th>
+                    <td>@Model.User.About</td>
+                </tr>
+            </tbody>
+        </table>
+        <h1> <br /> Мои друзья</h1>
+        <div class="friends_container">
+
+
+        </div>
+
+    </div>
+    <div class="myimgcontainer">
+        <img class="my-img" src="@Model.User.Image" alt=" Нет изображения" />
+        <form method="" asp-controller="" asp-action="">
+            <input class="myedit_button" type="submit" value="Редактировать профиль" />
+        </form>
+        <form method="post" asp-controller="AccountManager" asp-action="Logout">
+            <input class="mypage_button" type="submit" value="Выход" />
+        </form>
+    </div>
+</div>
+
+
+
+  
+
+
+              
