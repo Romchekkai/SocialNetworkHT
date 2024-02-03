@@ -3,6 +3,54 @@
 .my-page{
 
 }
-.my-img{
-    width: 60%
+.my-img {
+    width: 60%;
+    left: 5%;
+}
+
+.myedit_button {
+    background-color: #3b9675;
+    color: black;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    width: 50%;
+    
+    
+}
+.mypage_button {
+    background-color: #d93909;
+    color: black;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    width: 50%;
+}
+.page_container{
+    position: relative;
+    padding: 10px 10px 10px 10px;
+    
+    margin: 5%;
+    width:auto;
+    
+    
+}
+.aboutme{
+    position: absolute;
+    
+    right:10%;
+}
+.myimgcontainer{
+    position:absolute;
+
+}
+
+.friends_container {
+    border: 5px solid darkblue;
+    height: 150px;
+    width: 200px;
 }
