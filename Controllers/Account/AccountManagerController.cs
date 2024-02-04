@@ -236,14 +236,7 @@ namespace SocialNetworkHT.Controllers.Account
         }
 
 
-        [Route("ChatMessageList")]
-        [HttpGet]
-        public async Task<IActionResult> ChatMessageList(string id)
-        {
-            var model = await GenerateChat(id);
-
-            return View("ChatMessageList", model);
-        }
+     
 
         [Route("Chat")]
         [HttpPost]
