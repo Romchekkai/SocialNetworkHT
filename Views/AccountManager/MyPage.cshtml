@@ -24,13 +24,49 @@
                 </tr>
                 <tr>
                     <th scope="row">Почтовый адрес</th>
-                    <td>@Model.User.About</td>
+                    <td>@Model.User.Email</td>
                 </tr>
             </tbody>
         </table>
-        <h1> <br /> Мои друзья</h1>
+        <h1> <br /> </h1>
         <div class="friends_container">
+            <label class="gray-text">Список друзей</label>
 
+            @if (Model.Friends.Count != 0)
+            {
+
+                @foreach (var user in @Model.Friends)
+                {
+                    <div>
+                        <div class="mrgn center-align">
+                            <img src="@user.Image" class="ava" />
+                        </div>
+                        <div class="mrgn center-align">
+                            @user.GetFullName()
+                        </div>
+                        <div class="mrgn center-align">
+                            <form asp-controller="AccountManager" asp-action="Chat" asp-route-id="@user.Id" method="post">
+                                <button type="submit" class="btn btn-sm btn-primary">
+                                    Сообщение
+                                </button>
+                            </form>
+                        </div>
+                        <div class="mrgn center-align">
+                            <form asp-controller="AccountManager" asp-action="DeleteFriend" asp-route-id="@user.Id" method="post">
+                                <button type="submit" class="btn btn-sm btn-primary">
+                                    Удалить из друзей
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div>
+                    <label> У вас пока нет друзей.</label>
+                </div>
+            }
 
         </div>
 

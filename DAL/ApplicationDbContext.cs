@@ -4,6 +4,7 @@ using System.Text;
 using SocialNetworkHT.Models.Users;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using SocialNetworkHT.Configurations;
 
 namespace SocialNetworkHT.DAL
 {
@@ -13,6 +14,15 @@ namespace SocialNetworkHT.DAL
             : base(options)
         {
             Database.EnsureCreated();
+        }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.ApplyConfiguration(new FriendConfiguration());
+
+            builder.ApplyConfiguration(new MessageConfuiguration());
         }
     }
 }

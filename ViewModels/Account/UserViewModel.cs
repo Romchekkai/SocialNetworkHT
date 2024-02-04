@@ -1,5 +1,6 @@
 ﻿using SocialNetworkHT.Models.Users;
 using System;
+using System.Collections.Generic;
 
 namespace SocialNetworkHT.ViewModels.Account
 {
@@ -11,5 +12,7 @@ namespace SocialNetworkHT.ViewModels.Account
         {
             User = user;
         }
+
+        public List<User> Friends { get; set; }
     }
 }

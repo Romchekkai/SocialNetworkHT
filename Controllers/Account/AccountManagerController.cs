@@ -7,6 +7,11 @@ using SocialNetworkHT.ViewModels.Account;
 using System.Security.Policy;
 using System.Threading.Tasks;
 using SocialNetworkHT.Extentions;
+using System.Collections.Generic;
+using System.Linq;
+using SocialNetworkHT.DAL.Repository;
+using SocialNetworkHT.DAL;
+using System;
 
 namespace SocialNetworkHT.Controllers.Account
 {
@@ -17,11 +22,13 @@ namespace SocialNetworkHT.Controllers.Account
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
 
-        public AccountManagerController(UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper)
+        private IUnitOfWork _unitOfWork;
+        public AccountManagerController(UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper,IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _mapper = mapper;
+            _unitOfWork = unitOfWork;
         }
 
 
@@ -61,17 +68,27 @@ namespace SocialNetworkHT.Controllers.Account
             return RedirectToAction("Index", "Home"); 
         }
 
+        private async Task<List<User>> GetAllFriend(User user)
+        {
+            var repository = _unitOfWork.GetRepository<Friend>() as FriendsRepository;
 
+            return repository.GetFriendsByUser(user);
+        }
+
+        [Authorize]
         [Route("MyPage")]
         [HttpGet]
-        [Authorize]
-        public IActionResult MyPage()
+        public async Task<IActionResult> MyPage()
         {
             var user = User;
 
-            var result = _userManager.GetUserAsync(user);
+            var result = await _userManager.GetUserAsync(user);
 
-            return View("MyPage", new UserViewModel(result.Result));
+            var model = new UserViewModel(result);
+
+            model.Friends = await GetAllFriend(model.User);
+
+            return View("MyPage", model);
         }
 
 
@@ -82,6 +99,17 @@ namespace SocialNetworkHT.Controllers.Account
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+
+        [Route("GoBack")]
+        [HttpGet]
+        [Authorize]
+        public IActionResult GoBack()
+        {
+            
+
+            return Redirect("/MyPage");
         }
 
 
@@ -125,6 +153,158 @@ namespace SocialNetworkHT.Controllers.Account
                 return View("UserEdit", model);
             }
         }
+
+        private async Task<SearchViewModel> CreateSearch(string search)
+        {
+            var currentuser = User;
+
+            var result = await _userManager.GetUserAsync(currentuser);
+
+            var list = _userManager.Users.AsEnumerable().Where(x => x.GetFullName().ToLower().Contains(search.ToLower())).ToList();
+            var withfriend = await GetAllFriend();
+
+            var data = new List<UserWithFriendExt>();
+            list.ForEach(x =>
+            {
+                var t = _mapper.Map<UserWithFriendExt>(x);
+                t.IsFriendWithCurrent = withfriend.Where(y => y.Id == x.Id || x.Id == result.Id).Count() != 0;
+                data.Add(t);
+            });
+
+            var model = new SearchViewModel()
+            {
+                UserList = data
+            };
+
+            return model;
+        }
+
+        private async Task<List<User>> GetAllFriend()
+        {
+            var user = User;
+
+            var result = await _userManager.GetUserAsync(user);
+
+            var repository = _unitOfWork.GetRepository<Friend>() as FriendsRepository;
+
+            return repository.GetFriendsByUser(result);
+        }
+
+        [Route("UserList")]
+        [HttpPost]
+        public async Task<IActionResult> UserList(string search)
+        {
+            var model = await CreateSearch(search);
+
+            return View("UserList", model); 
+        }
+
+        [Route("AddFriend")]
+        [HttpPost]
+        public async Task<IActionResult> AddFriend(string id)
+        {
+            var currentuser = User;
+
+            var result = await _userManager.GetUserAsync(currentuser);
+
+            var friend = await _userManager.FindByIdAsync(id);
+
+            var repository = _unitOfWork.GetRepository<Friend>() as FriendsRepository;
+
+            repository.AddFriend(result, friend);
+
+            return RedirectToAction("MyPage", "AccountManager");
+
+        }
+
+        [Route("DeleteFriend")]
+        [HttpPost]
+        public async Task<IActionResult> DeleteFriend(string id)
+        {
+            var currentuser = User;
+
+            var result = await _userManager.GetUserAsync(currentuser);
+
+            var friend = await _userManager.FindByIdAsync(id);
+
+            var repository = _unitOfWork.GetRepository<Friend>() as FriendsRepository;
+
+            repository.DeleteFriend(result, friend);
+
+            return RedirectToAction("MyPage", "AccountManager");
+
+        }
+
+
+        [Route("ChatMessageList")]
+        [HttpGet]
+        public async Task<IActionResult> ChatMessageList(string id)
+        {
+            var model = await GenerateChat(id);
+
+            return View("ChatMessageList", model);
+        }
+
+        [Route("Chat")]
+        [HttpPost]
+        public async Task<IActionResult> Chat(string id)
+        {
+            var model = await GenerateChat(id);
+            return View("Chat", model);
+        }
+
+        private async Task<ChatViewModel> GenerateChat(string id)
+        {
+            var currentuser = User;
+
+            var result = await _userManager.GetUserAsync(currentuser);
+            var friend = await _userManager.FindByIdAsync(id);
+
+            var repository = _unitOfWork.GetRepository<Message>() as MessageRepository;
+
+            var mess = repository.GetMessages(result, friend);
+
+            var model = new ChatViewModel()
+            {
+                Sender = result,
+                Recipient = friend,
+                History = mess.OrderBy(x => x.Id).ToList(),
+            };
+
+            return model;
+        }
+
+        [Route("NewMessage")]
+        [HttpPost]
+        public async Task<IActionResult> NewMessage(string id, ChatViewModel chat)
+        {
+            if (!String.IsNullOrEmpty(chat.Message.Text))
+            {
+                var currentuser = User;
+
+                var result = await _userManager.GetUserAsync(currentuser);
+                var friend = await _userManager.FindByIdAsync(id);
+
+                var repository = _unitOfWork.GetRepository<Message>() as MessageRepository;
+
+                var item = new Message()
+                {
+                    Sender = result,
+                    Recipient = friend,
+                    Text = chat.Message.Text,
+                };
+                repository.Create(item);
+
+                ModelState.Clear();
+            }
+
+            var model = await GenerateChat(id);
+            return View("Chat", model);
+        }
+
+
+
+
 
     }
 }

@@ -7,9 +7,7 @@ namespace SocialNetworkHT.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>("Image", "AspNetUsers", nullable: true);
-            migrationBuilder.AddColumn<string>("Status", "AspNetUsers", nullable: true);
-            migrationBuilder.AddColumn<string>("About", "AspNetUsers", nullable: true);
+           
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -18,3 +16,6 @@ namespace SocialNetworkHT.Migrations
         }
     }
 }
+/*migrationBuilder.AddColumn<string>("Image", "AspNetUsers", nullable: true);
+            migrationBuilder.AddColumn<string>("Status", "AspNetUsers", nullable: true);
+            migrationBuilder.AddColumn<string>("About", "AspNetUsers", nullable: true);*/
