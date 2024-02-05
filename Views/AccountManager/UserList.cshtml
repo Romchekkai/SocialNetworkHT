@@ -8,7 +8,9 @@
 
         @foreach (var user in @Model.UserList)
         {
+            <img @user.Image />
             <div>
+                
                 <label>@user.GetFullName()</label>
                 @if (!@user.IsFriendWithCurrent)
                 {

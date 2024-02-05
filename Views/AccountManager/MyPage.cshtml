@@ -28,16 +28,15 @@
                 </tr>
             </tbody>
         </table>
-        <h1> <br /> </h1>
-        <div class="friends_container">
-            <label class="gray-text">Список друзей</label>
+        <h4> <br /><a asp-controller="AccountManager" asp-action="FriendList">Список друзей</a> </h4>
+        <div>
+            
 
             @if (Model.Friends.Count != 0)
             {
-
                 @foreach (var user in @Model.Friends)
                 {
-                    <div>
+                    <div class="friends_container">
                         <div class="mrgn center-align">
                             <img src="@user.Image" class="ava" />
                         </div>

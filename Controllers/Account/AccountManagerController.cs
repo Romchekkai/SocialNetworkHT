@@ -303,8 +303,22 @@ namespace SocialNetworkHT.Controllers.Account
         }
 
 
+        [Route("FriendList")]
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> FriendList()
+        {
+            var user = User;
 
+            var result = await _userManager.GetUserAsync(user);
 
+            var model = new UserViewModel(result);
 
+            model.Friends = await GetAllFriend(model.User);
+
+            return View("FriendList", model);
+        }
+
+       
     }
 }
