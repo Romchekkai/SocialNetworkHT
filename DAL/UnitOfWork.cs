@@ -1,4 +1,6 @@
-﻿using SocialNetworkHT.DAL.Repository;
+﻿// Ignore Spelling: app
+
+using SocialNetworkHT.DAL.Repository;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
 using System.Collections.Generic;

@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿// Ignore Spelling: Extentions
+
+using Microsoft.Extensions.DependencyInjection;
 using SocialNetworkHT.DAL;
 using SocialNetworkHT.DAL.Repository;
 

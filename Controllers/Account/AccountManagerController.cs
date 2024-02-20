@@ -23,7 +23,8 @@ namespace SocialNetworkHT.Controllers.Account
         private readonly SignInManager<User> _signInManager;
 
         private IUnitOfWork _unitOfWork;
-        public AccountManagerController(UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper,IUnitOfWork unitOfWork)
+        public AccountManagerController(UserManager<User> userManager, SignInManager<User> signInManager,
+            IMapper mapper,IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
             _signInManager = signInManager;
