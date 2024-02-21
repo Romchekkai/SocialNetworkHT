@@ -1,24 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+// Ignore Spelling: app env
+
+
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using SocialNetworkHT.DAL.Repository;
+using Microsoft.Extensions.Hosting;
 using SocialNetworkHT.DAL;
+using SocialNetworkHT.DAL.Repository;
 using SocialNetworkHT.Extentions;
 using SocialNetworkHT.Models.Users;
-using SocialNetworkHT;
-using Microsoft.Extensions.Hosting;
+using System.Linq;
 
 namespace SocialNetworkHT
 {
@@ -36,14 +31,16 @@ namespace SocialNetworkHT
 
             string connection = Configuration.GetConnectionString("DefaultConnection");
 
-            var mapperConfig = new MapperConfiguration((v) =>
-            {
-                v.AddProfile(new MappingProfile());
-            });
+            /*    var mapperConfig = new MapperConfiguration((v) =>
+                {
+                    v.AddProfile(new MappingProfile());
+                });
 
-            IMapper mapper = mapperConfig.CreateMapper();
+                IMapper mapper = mapperConfig.CreateMapper();
 
-            services.AddSingleton(mapper);
+                services.AddSingleton(mapper);*/
+            services.AddAutoMapper(typeof(MappingProfile));
+            //services.AddTransient(IService1, Class1);
 
 
             services

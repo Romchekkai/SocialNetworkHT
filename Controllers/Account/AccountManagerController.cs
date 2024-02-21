@@ -23,7 +23,8 @@ namespace SocialNetworkHT.Controllers.Account
         private readonly SignInManager<User> _signInManager;
 
         private IUnitOfWork _unitOfWork;
-        public AccountManagerController(UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper,IUnitOfWork unitOfWork)
+        public AccountManagerController(UserManager<User> userManager, SignInManager<User> signInManager,
+            IMapper mapper,IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -296,8 +297,22 @@ namespace SocialNetworkHT.Controllers.Account
         }
 
 
+        [Route("FriendList")]
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> FriendList()
+        {
+            var user = User;
 
+            var result = await _userManager.GetUserAsync(user);
 
+            var model = new UserViewModel(result);
 
+            model.Friends = await GetAllFriend(model.User);
+
+            return View("FriendList", model);
+        }
+
+       
     }
 }
