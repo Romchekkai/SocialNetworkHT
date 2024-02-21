@@ -1,6 +1,6 @@
 // Ignore Spelling: app env
 
-using BL;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -40,7 +40,7 @@ namespace SocialNetworkHT
 
                 services.AddSingleton(mapper);*/
             services.AddAutoMapper(typeof(MappingProfile));
-            services.AddTransient(IService1, Class1);
+            //services.AddTransient(IService1, Class1);
 
 
             services
